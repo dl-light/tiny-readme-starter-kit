@@ -1,4 +1,5 @@
-import { useNavigate, useSearchParams } from 'react-router';
+
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { AuthLayout } from '@/components/layouts/auth-layout';
 import { paths } from '@/config/paths';
