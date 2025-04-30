@@ -1,9 +1,11 @@
+
 /// <reference types="vitest" />
 /// <reference types="vite/client" />
 
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import viteTsconfigPaths from 'vite-tsconfig-paths';
+import path from 'path';
 
 export default defineConfig({
   base: './',
@@ -13,6 +15,11 @@ export default defineConfig({
   },
   preview: {
     port: 3000,
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
   },
   test: {
     globals: true,
@@ -26,7 +33,7 @@ export default defineConfig({
   optimizeDeps: { exclude: ['fsevents'] },
   build: {
     rollupOptions: {
-      external: ['fs/promises'],
+      external: ['fs/promises', 'react-query-auth'],
       output: {
         experimentalMinChunkSize: 3500,
       },
