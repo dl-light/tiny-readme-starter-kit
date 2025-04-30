@@ -1,7 +1,11 @@
 
-import { createRoot } from 'react-dom/client';
-import '../react-vite/src/index.css';
-import App from './App';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
+import './index.css';
 
-// Redirect to the react-vite app
-createRoot(document.getElementById("root")!).render(<App />);
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);

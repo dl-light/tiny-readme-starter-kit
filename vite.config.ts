@@ -30,7 +30,11 @@ export default defineConfig(({ mode }) => ({
         // Externalize testing-related dependencies that shouldn't be included in the production build
         /^msw/,
         'fs/promises',
-        'fsevents'
+        'fsevents',
+        ...(mode === 'development' ? [] : [
+          'react-error-boundary', 
+          '@tanstack/react-query-devtools'
+        ])
       ],
     },
   },
