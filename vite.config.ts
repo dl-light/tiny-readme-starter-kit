@@ -31,10 +31,11 @@ export default defineConfig(({ mode }) => ({
         /^msw/,
         'fs/promises',
         'fsevents',
+        'axios',
+        'react-query-auth',
         ...(mode === 'development' ? [] : [
           'react-error-boundary', 
           '@tanstack/react-query-devtools',
-          'react-query-auth'
         ])
       ],
     },
