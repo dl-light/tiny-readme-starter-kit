@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { type FieldError } from 'react-hook-form';
 
@@ -21,10 +22,10 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
   return (
     <div>
       <Label>
-        {label}
-        <div className="mt-1">{children}</div>
+        <span className="mb-1.5 block font-medium text-gray-700">{label}</span>
+        <div>{children}</div>
       </Label>
-      <Error errorMessage={error?.message} />
+      {error && <Error errorMessage={error?.message} />}
     </div>
   );
 };

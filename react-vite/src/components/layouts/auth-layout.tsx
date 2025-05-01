@@ -32,25 +32,25 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
   return (
     <>
       <Head title={title} />
-      <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-gray-50 to-gray-100 py-12 sm:px-6 lg:px-8">
-        <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="flex justify-center">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-md space-y-8">
+          <div className="flex flex-col items-center justify-center">
             <Link
               className="flex items-center text-white"
               to={paths.home.getHref()}
             >
-              <img className="h-24 w-auto drop-shadow-md" src={logo} alt="Logo" />
+              <img className="h-20 w-auto drop-shadow-lg" src={logo} alt="Logo" />
             </Link>
+
+            <h2 className="mt-5 text-center text-3xl font-extrabold text-gray-900">
+              {title}
+            </h2>
           </div>
 
-          <h2 className="mt-3 text-center text-3xl font-extrabold text-gray-900">
-            {title}
-          </h2>
-        </div>
-
-        <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white px-6 py-8 shadow-lg sm:rounded-lg sm:px-10 border border-gray-100">
-            {children}
+          <div className="mt-8 overflow-hidden rounded-xl bg-white shadow-2xl ring-1 ring-black/5">
+            <div className="px-6 py-8 sm:px-10">
+              {children}
+            </div>
           </div>
         </div>
       </div>

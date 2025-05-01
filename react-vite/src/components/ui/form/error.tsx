@@ -1,17 +1,19 @@
-export type ErrorProps = {
-  errorMessage?: string | null;
+
+import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
+
+type ErrorProps = {
+  errorMessage?: string;
 };
 
 export const Error = ({ errorMessage }: ErrorProps) => {
-  if (!errorMessage) return null;
+  if (!errorMessage) {
+    return null;
+  }
 
   return (
-    <div
-      role="alert"
-      aria-label={errorMessage}
-      className="text-sm font-semibold text-red-500"
-    >
-      {errorMessage}
+    <div className="mt-1.5 flex items-center gap-1 text-sm text-red-600" role="alert">
+      <ExclamationCircleIcon className="h-4 w-4" />
+      <span>{errorMessage}</span>
     </div>
   );
 };
