@@ -8,6 +8,14 @@ export enum ROLES {
   USER = 'USER',
 }
 
+export const POLICIES = {
+  'comment:delete': (user: any, comment: any) => {
+    if (user?.role === ROLES.ADMIN) return true;
+    if (user?.id === comment.authorId) return true;
+    return false;
+  }
+};
+
 type AuthorizationProps = {
   forbiddenFallback?: React.ReactNode;
   children: React.ReactNode;
@@ -17,6 +25,9 @@ type AuthorizationProps = {
     }
   | {
       condition: boolean;
+    }
+  | {
+      policyCheck: boolean;
     }
 );
 
@@ -50,6 +61,10 @@ export const Authorization = ({
 
   if ('condition' in props) {
     canAccess = props.condition;
+  }
+
+  if ('policyCheck' in props) {
+    canAccess = props.policyCheck;
   }
 
   return <>{canAccess ? children : forbiddenFallback}</>;
