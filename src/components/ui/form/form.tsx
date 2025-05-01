@@ -5,11 +5,12 @@ import {
   UseFormReturn,
   SubmitHandler,
   UseFormProps,
+  FieldValues,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
-type FormProps<TFormValues> = {
+type FormProps<TFormValues extends FieldValues> = {
   onSubmit: SubmitHandler<TFormValues>;
   children: (methods: UseFormReturn<TFormValues>) => React.ReactNode;
   options?: UseFormProps<TFormValues>;
@@ -19,7 +20,7 @@ type FormProps<TFormValues> = {
 };
 
 export const Form = <
-  TFormValues extends Record<string, any> = Record<string, any>
+  TFormValues extends FieldValues = FieldValues
 >({
   onSubmit,
   children,

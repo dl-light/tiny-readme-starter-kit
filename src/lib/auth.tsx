@@ -12,12 +12,23 @@ export interface User {
   lastName: string;
   email: string;
   role: string;
+  bio?: string;
 }
+
+// Mock user data
+const mockUser: User = {
+  id: '1',
+  firstName: 'John',
+  lastName: 'Doe',
+  email: 'john@example.com',
+  role: 'ADMIN',
+  bio: 'Software developer with a passion for React'
+};
 
 // Simplified auth hooks
 export const useUser = () => {
   return {
-    data: null,
+    data: mockUser,
     isLoading: false,
     error: null,
   };

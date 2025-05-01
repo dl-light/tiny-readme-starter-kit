@@ -1,14 +1,18 @@
+
 // Add or update the existing types file
-export interface User {
+export interface BaseEntity {
   id: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface User extends BaseEntity {
   firstName: string;
   lastName: string;
   email: string;
   role: string;
   teamId: string;
   bio?: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface AuthResponse {
@@ -16,12 +20,9 @@ export interface AuthResponse {
   token?: string;
 }
 
-export interface Team {
-  id: string;
+export interface Team extends BaseEntity {
   name: string;
   description?: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 // Add other types as needed

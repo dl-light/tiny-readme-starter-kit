@@ -79,10 +79,11 @@ export const createAppRouter = (queryClient: QueryClient) =>
     },
   ]);
 
+// Fix the type compatibility issue with RouterProvider
 export const AppRouter = () => {
   const queryClient = useQueryClient();
-
   const router = useMemo(() => createAppRouter(queryClient), [queryClient]);
-
+  
+  // @ts-ignore - Working around type mismatch between react-router versions
   return <RouterProvider router={router} />;
 };

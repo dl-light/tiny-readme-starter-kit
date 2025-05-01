@@ -1,9 +1,14 @@
 
 import * as React from 'react';
-import { type FieldError } from 'react-hook-form';
+import { type FieldError as RHFFieldError } from 'react-hook-form';
 
 import { Error } from './error';
 import { Label } from './label';
+
+// Extended FieldError type to ensure compatibility
+export type FieldError = RHFFieldError & {
+  type: string;
+};
 
 type FieldWrapperProps = {
   label?: string;
