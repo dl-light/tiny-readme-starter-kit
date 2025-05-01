@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => ({
         'axios',
         'react-query-auth',
         'zustand',
+        'dayjs',
         ...(mode === 'development' ? [] : [
           'react-error-boundary', 
           '@tanstack/react-query-devtools',
