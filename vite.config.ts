@@ -37,6 +37,8 @@ export default defineConfig(({ mode }) => ({
         'dayjs',
         'dompurify',
         'marked',
+        'js-cookie',
+        '@mswjs/data',
         ...(mode === 'development' ? [] : [
           'react-error-boundary', 
           '@tanstack/react-query-devtools',
