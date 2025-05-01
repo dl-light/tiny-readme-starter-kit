@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
@@ -9,27 +10,27 @@ export const deleteDiscussion = ({
   discussionId,
 }: {
   discussionId: string;
-}) => {
+}): Promise<void> => {
   return api.delete(`/discussions/${discussionId}`);
 };
 
 type UseDeleteDiscussionOptions = {
-  mutationConfig?: MutationConfig<typeof deleteDiscussion>;
+  mutationConfig?: MutationConfig<void, unknown, { discussionId: string }>;
 };
 
 export const useDeleteDiscussion = ({
   mutationConfig,
-}: UseDeleteDiscussionOptions = {}) => {
+}: UseDeleteDiscussionOptions) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (...args) => {
+    onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: getDiscussionsQueryOptions().queryKey,
       });
-      onSuccess?.(...args);
+      onSuccess?.(_, variables);
     },
     ...restConfig,
     mutationFn: deleteDiscussion,

@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
@@ -7,28 +8,26 @@ import { Discussion } from '@/types/api';
 
 import { getDiscussionsQueryOptions } from './get-discussions';
 
-export const createDiscussionInputSchema = z.object({
+export const createDiscussionSchema = z.object({
   title: z.string().min(1, 'Required'),
   body: z.string().min(1, 'Required'),
 });
 
-export type CreateDiscussionInput = z.infer<typeof createDiscussionInputSchema>;
+export type CreateDiscussionDTO = z.infer<typeof createDiscussionSchema>;
 
 export const createDiscussion = ({
   data,
 }: {
-  data: CreateDiscussionInput;
+  data: CreateDiscussionDTO;
 }): Promise<Discussion> => {
-  return api.post(`/discussions`, data);
+  return api.post('/discussions', data);
 };
 
 type UseCreateDiscussionOptions = {
-  mutationConfig?: MutationConfig<typeof createDiscussion>;
+  mutationConfig?: MutationConfig<Discussion, unknown, { data: CreateDiscussionDTO }>;
 };
 
-export const useCreateDiscussion = ({
-  mutationConfig,
-}: UseCreateDiscussionOptions = {}) => {
+export const useCreateDiscussion = ({ mutationConfig }: UseCreateDiscussionOptions = {}) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};

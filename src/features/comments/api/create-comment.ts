@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
@@ -24,7 +25,7 @@ export const createComment = ({
 
 type UseCreateCommentOptions = {
   discussionId: string;
-  mutationConfig?: MutationConfig<typeof createComment>;
+  mutationConfig?: MutationConfig<Comment, unknown, { data: CreateCommentInput }>;
 };
 
 export const useCreateComment = ({

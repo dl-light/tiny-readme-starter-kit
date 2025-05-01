@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
@@ -6,6 +7,7 @@ import { MutationConfig } from '@/lib/react-query';
 import { Discussion } from '@/types/api';
 
 import { getDiscussionQueryOptions } from './get-discussion';
+import { getDiscussionsQueryOptions } from './get-discussions';
 
 export const updateDiscussionInputSchema = z.object({
   title: z.string().min(1, 'Required'),
@@ -25,22 +27,27 @@ export const updateDiscussion = ({
 };
 
 type UseUpdateDiscussionOptions = {
-  mutationConfig?: MutationConfig<typeof updateDiscussion>;
+  mutationConfig?: MutationConfig<
+    Discussion, 
+    unknown, 
+    { data: UpdateDiscussionInput; discussionId: string }
+  >;
 };
 
 export const useUpdateDiscussion = ({
   mutationConfig,
-}: UseUpdateDiscussionOptions = {}) => {
+}: UseUpdateDiscussionOptions) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (data, ...args) => {
-      queryClient.refetchQueries({
-        queryKey: getDiscussionQueryOptions(data.id).queryKey,
+    onSuccess: (data, { discussionId }) => {
+      queryClient.invalidateQueries({ queryKey: getDiscussionsQueryOptions().queryKey });
+      queryClient.invalidateQueries({
+        queryKey: getDiscussionQueryOptions(discussionId).queryKey,
       });
-      onSuccess?.(data, ...args);
+      onSuccess?.(data, { data: { title: data.title, body: data.body }, discussionId });
     },
     ...restConfig,
     mutationFn: updateDiscussion,

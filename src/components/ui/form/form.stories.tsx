@@ -1,7 +1,9 @@
+
 import { Meta, StoryObj } from '@storybook/react';
 import { z } from 'zod';
 
 import { Button } from '../button';
+import { FieldError } from '@/types/api';
 
 import { Form } from './form';
 import { FormDrawer } from './form-drawer';
@@ -26,17 +28,17 @@ const MyForm = ({ hideSubmit = false }: { hideSubmit?: boolean }) => {
         <>
           <Input
             label="Title"
-            error={formState.errors['title']}
+            error={formState.errors['title'] as FieldError | undefined}
             registration={register('title')}
           />
           <Textarea
             label="Description"
-            error={formState.errors['description']}
+            error={formState.errors['description'] as FieldError | undefined}
             registration={register('description')}
           />
           <Select
             label="Type"
-            error={formState.errors['type']}
+            error={formState.errors['type'] as FieldError | undefined}
             registration={register('type')}
             options={['A', 'B', 'C'].map((type) => ({
               label: type,

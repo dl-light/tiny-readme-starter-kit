@@ -1,3 +1,4 @@
+
 import { Pen } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -72,12 +73,12 @@ export const UpdateDiscussion = ({ discussionId }: UpdateDiscussionProps) => {
             <>
               <Input
                 label="Title"
-                error={formState.errors['title']}
+                error={formState.errors['title'] as FieldError | undefined}
                 registration={register('title')}
               />
               <Textarea
                 label="Body"
-                error={formState.errors['body']}
+                error={formState.errors['body'] as FieldError | undefined}
                 registration={register('body')}
               />
             </>

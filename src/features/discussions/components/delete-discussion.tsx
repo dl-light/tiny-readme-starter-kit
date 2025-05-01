@@ -1,3 +1,4 @@
+
 import { Trash } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -40,9 +41,7 @@ export const DeleteDiscussion = ({ id }: DeleteDiscussionProps) => {
             isLoading={deleteDiscussionMutation.isPending}
             type="button"
             variant="destructive"
-            onClick={() =>
-              deleteDiscussionMutation.mutate({ discussionId: id })
-            }
+            onClick={() => deleteDiscussionMutation.mutate({ discussionId: id })}
           >
             Delete Discussion
           </Button>

@@ -1,37 +1,41 @@
-import { useMutation } from '@tanstack/react-query';
+
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
 
 import { api } from '@/lib/api-client';
 import { useUser } from '@/lib/auth';
 import { MutationConfig } from '@/lib/react-query';
+import { User } from '@/types/api';
 
-export const updateProfileInputSchema = z.object({
-  email: z.string().min(1, 'Required').email('Invalid email'),
+export const updateProfileSchema = z.object({
+  email: z.string().optional(),
   firstName: z.string().min(1, 'Required'),
   lastName: z.string().min(1, 'Required'),
-  bio: z.string(),
+  bio: z.string().optional(),
 });
 
-export type UpdateProfileInput = z.infer<typeof updateProfileInputSchema>;
+export type UpdateProfileDTO = z.infer<typeof updateProfileSchema>;
 
-export const updateProfile = ({ data }: { data: UpdateProfileInput }) => {
-  return api.patch(`/users/profile`, data);
+export const updateProfile = (data: UpdateProfileDTO): Promise<User> => {
+  return api.patch('/auth/profile', data);
 };
 
 type UseUpdateProfileOptions = {
-  mutationConfig?: MutationConfig<typeof updateProfile>;
+  mutationConfig?: MutationConfig<User, unknown, UpdateProfileDTO>;
 };
 
-export const useUpdateProfile = ({
-  mutationConfig,
-}: UseUpdateProfileOptions = {}) => {
-  const { refetch: refetchUser } = useUser();
+export const useUpdateProfile = ({ mutationConfig }: UseUpdateProfileOptions = {}) => {
+  const { refetch } = useUser();
+  const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
     onSuccess: (...args) => {
-      refetchUser();
+      queryClient.invalidateQueries({
+        queryKey: ['auth-user'],
+      });
+      refetch();
       onSuccess?.(...args);
     },
     ...restConfig,

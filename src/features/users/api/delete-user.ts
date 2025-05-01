@@ -1,3 +1,4 @@
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { api } from '@/lib/api-client';
@@ -5,21 +6,15 @@ import { MutationConfig } from '@/lib/react-query';
 
 import { getUsersQueryOptions } from './get-users';
 
-export type DeleteUserDTO = {
-  userId: string;
-};
-
-export const deleteUser = ({ userId }: DeleteUserDTO) => {
+export const deleteUser = ({ userId }: { userId: string }): Promise<void> => {
   return api.delete(`/users/${userId}`);
 };
 
 type UseDeleteUserOptions = {
-  mutationConfig?: MutationConfig<typeof deleteUser>;
+  mutationConfig?: MutationConfig<void, unknown, { userId: string }>;
 };
 
-export const useDeleteUser = ({
-  mutationConfig,
-}: UseDeleteUserOptions = {}) => {
+export const useDeleteUser = ({ mutationConfig }: UseDeleteUserOptions = {}) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
