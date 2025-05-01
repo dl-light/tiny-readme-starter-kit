@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => ({
         'fsevents',
         'axios',
         'react-query-auth',
+        'zustand',
         ...(mode === 'development' ? [] : [
           'react-error-boundary', 
           '@tanstack/react-query-devtools',

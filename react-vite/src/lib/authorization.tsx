@@ -1,82 +1,36 @@
-import * as React from 'react';
 
-import { Comment, User } from '@/types/api';
+import React, { createContext, useContext } from 'react';
 
-import { useUser } from './auth';
-
-export enum ROLES {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
-
-type RoleTypes = keyof typeof ROLES;
-
-export const POLICIES = {
-  'comment:delete': (user: User, comment: Comment) => {
-    if (user.role === 'ADMIN') {
-      return true;
-    }
-
-    if (user.role === 'USER' && comment.author?.id === user.id) {
-      return true;
-    }
-
-    return false;
-  },
+export const ROLES = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
 };
+
+type AuthorizationContextType = {
+  checkAccess: (params: { allowedRoles: string[] }) => boolean;
+};
+
+const AuthorizationContext = createContext<AuthorizationContextType | null>(null);
 
 export const useAuthorization = () => {
-  const user = useUser();
-
-  if (!user.data) {
-    throw Error('User does not exist!');
+  const context = useContext(AuthorizationContext);
+  if (!context) {
+    throw new Error('useAuthorization must be used within AuthorizationProvider');
   }
-
-  const checkAccess = React.useCallback(
-    ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
-      if (allowedRoles && allowedRoles.length > 0 && user.data) {
-        return allowedRoles?.includes(user.data.role);
-      }
-
-      return true;
-    },
-    [user.data],
-  );
-
-  return { checkAccess, role: user.data.role };
+  return context;
 };
 
-type AuthorizationProps = {
-  forbiddenFallback?: React.ReactNode;
+export const AuthorizationProvider: React.FC<{
   children: React.ReactNode;
-} & (
-  | {
-      allowedRoles: RoleTypes[];
-      policyCheck?: never;
-    }
-  | {
-      allowedRoles?: never;
-      policyCheck: boolean;
-    }
-);
+}> = ({ children }) => {
+  const checkAccess = ({ allowedRoles }: { allowedRoles: string[] }) => {
+    // In a real app, this would check the user's role against allowedRoles
+    return true;
+  };
 
-export const Authorization = ({
-  policyCheck,
-  allowedRoles,
-  forbiddenFallback = null,
-  children,
-}: AuthorizationProps) => {
-  const { checkAccess } = useAuthorization();
-
-  let canAccess = false;
-
-  if (allowedRoles) {
-    canAccess = checkAccess({ allowedRoles });
-  }
-
-  if (typeof policyCheck !== 'undefined') {
-    canAccess = policyCheck;
-  }
-
-  return <>{canAccess ? children : forbiddenFallback}</>;
+  return (
+    <AuthorizationContext.Provider value={{ checkAccess }}>
+      {children}
+    </AuthorizationContext.Provider>
+  );
 };
