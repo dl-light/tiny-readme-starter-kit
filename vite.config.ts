@@ -37,7 +37,7 @@ export default defineConfig(({ mode }) => ({
         'dayjs',
         'dompurify',
         'marked',
-        'js-cookie',
+        'js-cookie', // Added js-cookie to the external list
         '@mswjs/data',
         ...(mode === 'development' ? [] : [
           'react-error-boundary', 
