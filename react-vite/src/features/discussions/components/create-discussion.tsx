@@ -1,73 +1,74 @@
-import { Plus } from 'lucide-react';
 
-import { Button } from '@/components/ui/button';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
 import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';
 import { useNotifications } from '@/components/ui/notifications';
-import { Authorization, ROLES } from '@/lib/authorization';
+import { ROLES } from '@/lib/authorization';
 
-import {
-  createDiscussionInputSchema,
-  useCreateDiscussion,
-} from '../api/create-discussion';
+import { createDiscussion } from '../api/create-discussion';
+
+const schema = z.object({
+  title: z.string().min(1, 'Required'),
+  body: z.string().min(1, 'Required'),
+});
+
+type FormData = z.infer<typeof schema>;
 
 export const CreateDiscussion = () => {
-  const { addNotification } = useNotifications();
-  const createDiscussionMutation = useCreateDiscussion({
-    mutationConfig: {
-      onSuccess: () => {
-        addNotification({
-          type: 'success',
-          title: 'Discussion Created',
-        });
-      },
-    },
+  const notifications = useNotifications();
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(schema),
   });
 
-  return (
-    <Authorization allowedRoles={[ROLES.ADMIN]}>
-      <FormDrawer
-        isDone={createDiscussionMutation.isSuccess}
-        triggerButton={
-          <Button size="sm" icon={<Plus className="size-4" />}>
-            Create Discussion
-          </Button>
-        }
-        title="Create Discussion"
-        submitButton={
-          <Button
-            form="create-discussion"
-            type="submit"
-            size="sm"
-            isLoading={createDiscussionMutation.isPending}
-          >
-            Submit
-          </Button>
-        }
-      >
-        <Form
-          id="create-discussion"
-          onSubmit={(values) => {
-            createDiscussionMutation.mutate({ data: values });
-          }}
-          schema={createDiscussionInputSchema}
-        >
-          {({ register, formState }) => (
-            <>
-              <Input
-                label="Title"
-                error={formState.errors['title']}
-                registration={register('title')}
-              />
+  const createDiscussionMutation = createDiscussion();
 
-              <Textarea
-                label="Body"
-                error={formState.errors['body']}
-                registration={register('body')}
-              />
-            </>
-          )}
-        </Form>
-      </FormDrawer>
-    </Authorization>
+  const onSubmit = async (data: FormData) => {
+    await createDiscussionMutation.mutateAsync(data);
+    notifications.showNotification({
+      type: 'success',
+      title: 'Success',
+      duration: 5000,
+      message: `Discussion Created`,
+    });
+  };
+
+  return (
+    <FormDrawer
+      isDone={createDiscussionMutation.isSuccess}
+      triggerButton={{
+        label: 'Create Discussion',
+        icon: 'add',
+      }}
+      title="Create Discussion"
+      submitButton={{
+        label: 'Submit',
+        loading: createDiscussionMutation.isPending,
+        loadingText: 'Submitting...',
+      }}
+      formProps={{
+        onSubmit,
+        form,
+      }}
+    >
+      <div className="space-y-4">
+        <Form.Field
+          label="Title"
+          error={form.formState.errors['title']}
+          inputId="title"
+        >
+          <Input {...form.register('title')} />
+        </Form.Field>
+        <Form.Field
+          label="Body"
+          error={form.formState.errors['body']}
+          inputId="body"
+        >
+          <Textarea {...form.register('body')} />
+        </Form.Field>
+      </div>
+    </FormDrawer>
   );
 };
