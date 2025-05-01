@@ -1,52 +1,55 @@
 
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
+/// <reference types="vitest" />
+/// <reference types="vite/client" />
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
+import viteTsconfigPaths from 'vite-tsconfig-paths';
+import path from 'path';
+
+export default defineConfig({
+  base: './',
+  plugins: [react(), viteTsconfigPaths()],
   server: {
-    host: "::",
-    port: 8080,
+    port: 3000,
   },
-  plugins: [
-    react(),
-    mode === 'development' &&
-    componentTagger(),
-  ].filter(Boolean),
+  preview: {
+    port: 3000,
+  },
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./react-vite/src"),
+      '@': path.resolve(__dirname, './src'),
     },
   },
-  optimizeDeps: {
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/testing/setup-tests.ts',
+    exclude: ['**/node_modules/**', '**/e2e/**'],
+    coverage: {
+      include: ['src/**'],
+    },
+  },
+  optimizeDeps: { 
+    exclude: ['fsevents'],
     include: ['js-cookie']
   },
-  root: "./react-vite",
-  publicDir: "../public",
   build: {
-    outDir: "../dist",
-    emptyOutDir: true,
     rollupOptions: {
       external: [
-        // Externalize testing-related dependencies that shouldn't be included in the production build
-        /^msw/,
-        'fs/promises',
-        'fsevents',
-        'axios',
-        'react-query-auth',
-        'zustand',
-        'dayjs',
-        'dompurify',
-        'marked',
+        'fs/promises', 
+        'react-query-auth', 
+        'axios', 
+        'zustand', 
+        'dayjs', 
+        'dompurify', 
+        'marked', 
         'js-cookie',
-        '@mswjs/data',
-        ...(mode === 'development' ? [] : [
-          'react-error-boundary', 
-          '@tanstack/react-query-devtools',
-        ])
+        '@mswjs/data'
       ],
+      output: {
+        experimentalMinChunkSize: 3500,
+      },
     },
   },
-}));
+});

@@ -1,11 +1,31 @@
 
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from '../react-vite/src/app/index';
-import './index.css';
+import * as React from 'react';
+import { createRoot } from 'react-dom/client';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+import './index.css';
+import { App } from './app';
+
+const enableMocking = async () => {
+  if (import.meta.env.DEV) {
+    try {
+      const { worker } = await import('./testing/mocks/browser');
+      // Initialize the MSW worker only in development
+      return worker.start({ onUnhandledRequest: 'bypass' });
+    } catch (error) {
+      console.error('Error starting MSW worker:', error);
+    }
+  }
+  return Promise.resolve();
+};
+
+const root = document.getElementById('root');
+if (!root) throw new Error('No root element found');
+
+// Start the app only after we've (maybe) initialized MSW
+enableMocking().then(() => {
+  createRoot(root).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  );
+});
