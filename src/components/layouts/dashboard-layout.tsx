@@ -106,7 +106,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               key={item.name}
               to={item.to}
               end={item.name !== 'Discussions'}
-              className={({ isActive }) =>
+              className={({ isActive }: { isActive: boolean }) =>
                 cn(
                   'text-gray-300 hover:bg-gray-700 hover:text-white',
                   'group flex flex-1 w-full items-center rounded-md p-2 text-base font-medium',
@@ -149,7 +149,7 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
                     key={item.name}
                     to={item.to}
                     end
-                    className={({ isActive }) =>
+                    className={({ isActive }: { isActive: boolean }) =>
                       cn(
                         'text-gray-300 hover:bg-gray-700 hover:text-white',
                         'group flex flex-1 w-full items-center rounded-md p-2 text-base font-medium',
