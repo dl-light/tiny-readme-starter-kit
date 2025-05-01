@@ -32,14 +32,14 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
   return (
     <>
       <Head title={title} />
-      <div className="flex min-h-screen flex-col justify-center bg-gray-50 py-12 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen flex-col justify-center bg-gradient-to-br from-gray-50 to-gray-100 py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <div className="flex justify-center">
             <Link
               className="flex items-center text-white"
               to={paths.home.getHref()}
             >
-              <img className="h-24 w-auto" src={logo} alt="Workflow" />
+              <img className="h-24 w-auto drop-shadow-md" src={logo} alt="Logo" />
             </Link>
           </div>
 
@@ -49,7 +49,7 @@ export const AuthLayout = ({ children, title }: LayoutProps) => {
         </div>
 
         <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-          <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+          <div className="bg-white px-6 py-8 shadow-lg sm:rounded-lg sm:px-10 border border-gray-100">
             {children}
           </div>
         </div>

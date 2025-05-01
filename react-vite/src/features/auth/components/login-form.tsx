@@ -1,5 +1,6 @@
 
 import { Link, useSearchParams } from 'react-router-dom';
+import { Mail, Key, LogIn } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Form, Input } from '@/components/ui/form';
@@ -18,7 +19,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const redirectTo = searchParams.get('redirectTo');
 
   return (
-    <div>
+    <div className="space-y-6">
       <Form
         onSubmit={(values) => {
           login.mutate(values);
@@ -26,38 +27,45 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
         schema={loginInputSchema}
       >
         {({ register, formState }) => (
-          <>
+          <div className="space-y-5">
             <Input
               type="email"
               label="Email Address"
               error={formState.errors['email']}
               registration={register('email')}
+              icon={<Mail className="text-gray-400" size={18} />}
+              placeholder="your.email@example.com"
+              className="bg-gray-50"
             />
             <Input
               type="password"
               label="Password"
               error={formState.errors['password']}
               registration={register('password')}
+              icon={<Key className="text-gray-400" size={18} />}
+              placeholder="••••••••"
+              className="bg-gray-50"
             />
             <div>
               <Button
                 isLoading={login.isPending}
                 type="submit"
-                className="w-full"
+                className="w-full bg-blue-600 hover:bg-blue-700 transition-colors py-2.5"
+                icon={<LogIn size={18} />}
               >
                 Log in
               </Button>
             </div>
-          </>
+          </div>
         )}
       </Form>
-      <div className="mt-2 flex items-center justify-end">
+      <div className="mt-4 flex items-center justify-end">
         <div className="text-sm">
           <Link
             to={paths.auth.register.getHref(redirectTo)}
-            className="font-medium text-blue-600 hover:text-blue-500"
+            className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
           >
-            Register
+            Don't have an account? Register
           </Link>
         </div>
       </div>
