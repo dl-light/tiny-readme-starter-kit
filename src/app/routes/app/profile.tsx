@@ -1,3 +1,4 @@
+
 import { ContentLayout } from '@/components/layouts';
 import { UpdateProfile } from '@/features/users/components/update-profile';
 import { useUser } from '@/lib/auth';
@@ -40,7 +41,7 @@ const ProfileRoute = () => {
             <Entry label="Last Name" value={user.data.lastName} />
             <Entry label="Email Address" value={user.data.email} />
             <Entry label="Role" value={user.data.role} />
-            <Entry label="Bio" value={user.data.bio} />
+            <Entry label="Bio" value={user.data.bio || 'No bio provided'} />
           </dl>
         </div>
       </div>

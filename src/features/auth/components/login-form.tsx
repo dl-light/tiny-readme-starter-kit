@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Form, Input } from '@/components/ui/form';
 import { paths } from '@/config/paths';
 import { useLogin, loginInputSchema } from '@/lib/auth';
+import { FieldError } from '@/types/api';
 
 type LoginFormProps = {
   onSuccess: () => void;
@@ -31,7 +32,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <Input
               type="email"
               label="Email Address"
-              error={formState.errors['email']}
+              error={formState.errors['email'] as FieldError | undefined}
               registration={register('email')}
               icon={<Mail className="text-blue-500" size={18} />}
               placeholder="your.email@example.com"
@@ -40,7 +41,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <Input
               type="password"
               label="Password"
-              error={formState.errors['password']}
+              error={formState.errors['password'] as FieldError | undefined}
               registration={register('password')}
               icon={<Key className="text-blue-500" size={18} />}
               placeholder="••••••••"
@@ -61,7 +62,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       </Form>
       <div className="mt-4 text-center">
         <Link
-          to={paths.auth.register.getHref(redirectTo)}
+          to={paths.auth.register.getHref(redirectTo || undefined)}
           className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
         >
           Don't have an account? Register

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Form, Input, Select, Label, Switch } from '@/components/ui/form';
 import { paths } from '@/config/paths';
 import { useRegister, registerInputSchema } from '@/lib/auth';
-import { Team } from '@/types/api';
+import { FieldError, Team } from '@/types/api';
 
 type RegisterFormProps = {
   onSuccess: () => void;
@@ -43,7 +43,7 @@ export const RegisterForm = ({
               <Input
                 type="text"
                 label="First Name"
-                error={formState.errors['firstName']}
+                error={formState.errors['firstName'] as FieldError | undefined}
                 registration={register('firstName')}
                 icon={<User className="text-gray-400" size={18} />}
                 placeholder="John"
@@ -52,7 +52,7 @@ export const RegisterForm = ({
               <Input
                 type="text"
                 label="Last Name"
-                error={formState.errors['lastName']}
+                error={formState.errors['lastName'] as FieldError | undefined}
                 registration={register('lastName')}
                 icon={<User className="text-gray-400" size={18} />}
                 placeholder="Doe"
@@ -62,7 +62,7 @@ export const RegisterForm = ({
             <Input
               type="email"
               label="Email Address"
-              error={formState.errors['email']}
+              error={formState.errors['email'] as FieldError | undefined}
               registration={register('email')}
               icon={<Mail className="text-gray-400" size={18} />}
               placeholder="your.email@example.com"
@@ -71,7 +71,7 @@ export const RegisterForm = ({
             <Input
               type="password"
               label="Password"
-              error={formState.errors['password']}
+              error={formState.errors['password'] as FieldError | undefined}
               registration={register('password')}
               icon={<Key className="text-gray-400" size={18} />}
               placeholder="••••••••"
@@ -93,7 +93,7 @@ export const RegisterForm = ({
             {chooseTeam && teams ? (
               <Select
                 label="Team"
-                error={formState.errors['teamId']}
+                error={formState.errors['teamId'] as FieldError | undefined}
                 registration={register('teamId')}
                 options={teams?.map((team) => ({
                   label: team.name,
@@ -105,7 +105,7 @@ export const RegisterForm = ({
               <Input
                 type="text"
                 label="Team Name"
-                error={formState.errors['teamName']}
+                error={formState.errors['teamName'] as FieldError | undefined}
                 registration={register('teamName')}
                 placeholder="Your Team"
                 className="bg-gray-50"
@@ -127,7 +127,7 @@ export const RegisterForm = ({
       <div className="mt-4 flex items-center justify-end">
         <div className="text-sm">
           <Link
-            to={paths.auth.login.getHref(redirectTo)}
+            to={paths.auth.login.getHref(redirectTo || undefined)}
             className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
           >
             Already have an account? Log In

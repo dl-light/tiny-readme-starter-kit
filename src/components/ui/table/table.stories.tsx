@@ -1,6 +1,8 @@
+
 import { Meta, StoryObj } from '@storybook/react';
 
 import { Table } from './table';
+import { BaseEntity } from '@/types/api';
 
 const meta: Meta<typeof Table> = {
   component: Table,
@@ -8,9 +10,8 @@ const meta: Meta<typeof Table> = {
 
 export default meta;
 
-type User = {
-  id: string;
-  createdAt: number;
+// Update User type to extend BaseEntity
+type User = BaseEntity & {
   name: string;
   title: string;
   role: string;
@@ -22,7 +23,8 @@ type Story = StoryObj<typeof Table<User>>;
 const data: User[] = [
   {
     id: '1',
-    createdAt: Date.now(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     name: 'Jane Cooper',
     title: 'Regional Paradigm Technician',
     role: 'Admin',
@@ -30,7 +32,8 @@ const data: User[] = [
   },
   {
     id: '2',
-    createdAt: Date.now(),
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
     name: 'Cody Fisher',
     title: 'Product Directives Officer',
     role: 'Owner',

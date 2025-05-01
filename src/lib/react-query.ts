@@ -5,3 +5,6 @@ export const queryConfig = {
     retry: false,
   },
 };
+
+// Export the MutationConfig type for consistency
+export type { MutationConfig } from '@/types/api';

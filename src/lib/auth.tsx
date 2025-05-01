@@ -4,17 +4,9 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { z } from 'zod';
 
 import { paths } from '@/config/paths';
+import { User } from '@/types/api';
 
-// Type for user data
-export interface User {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  bio?: string;
-}
-
+// Type for user data - using the User from types/api.ts
 // Mock user data
 const mockUser: User = {
   id: '1',
@@ -22,7 +14,10 @@ const mockUser: User = {
   lastName: 'Doe',
   email: 'john@example.com',
   role: 'ADMIN',
-  bio: 'Software developer with a passion for React'
+  teamId: '1',
+  bio: 'Software developer with a passion for React',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 };
 
 // Simplified auth hooks
@@ -31,12 +26,18 @@ export const useUser = () => {
     data: mockUser,
     isLoading: false,
     error: null,
+    user: mockUser, // Adding user property to fix authorization.tsx error
+    refetch: () => Promise.resolve({ data: mockUser }) // Adding refetch method
   };
 };
 
 export const useLogin = (options?: any) => {
   return {
-    mutate: (data: any) => {},
+    mutate: (data: any) => {
+      if (options?.onSuccess) {
+        options.onSuccess();
+      }
+    },
     isPending: false,
     error: null,
   };
@@ -44,7 +45,11 @@ export const useLogin = (options?: any) => {
 
 export const useLogout = (options?: any) => {
   return {
-    mutate: (data: any) => {},
+    mutate: (data: any) => {
+      if (options?.onSuccess) {
+        options.onSuccess();
+      }
+    },
     isPending: false,
     error: null,
   };
@@ -52,7 +57,11 @@ export const useLogout = (options?: any) => {
 
 export const useRegister = (options?: any) => {
   return {
-    mutate: (data: any) => {},
+    mutate: (data: any) => {
+      if (options?.onSuccess) {
+        options.onSuccess();
+      }
+    },
     isPending: false,
     error: null,
   };
@@ -68,6 +77,8 @@ export const registerInputSchema = z.object({
   firstName: z.string().min(1, 'Required'),
   lastName: z.string().min(1, 'Required'),
   password: z.string().min(5, 'Required'),
+  teamId: z.string().optional(),
+  teamName: z.string().optional(),
 });
 
 // Simplified AuthLoader component
