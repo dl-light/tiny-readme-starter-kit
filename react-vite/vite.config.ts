@@ -31,7 +31,8 @@ export default defineConfig({
     },
   },
   optimizeDeps: { 
-    exclude: ['fsevents'] 
+    exclude: ['fsevents'],
+    include: ['js-cookie']
   },
   build: {
     rollupOptions: {
@@ -43,7 +44,7 @@ export default defineConfig({
         'dayjs', 
         'dompurify', 
         'marked', 
-        'js-cookie', // Added js-cookie to the external list
+        'js-cookie',
         '@mswjs/data'
       ],
       output: {

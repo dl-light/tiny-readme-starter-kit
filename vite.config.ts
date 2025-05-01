@@ -20,6 +20,9 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./react-vite/src"),
     },
   },
+  optimizeDeps: {
+    include: ['js-cookie']
+  },
   root: "./react-vite",
   publicDir: "../public",
   build: {
@@ -37,7 +40,7 @@ export default defineConfig(({ mode }) => ({
         'dayjs',
         'dompurify',
         'marked',
-        'js-cookie', // Added js-cookie to the external list
+        'js-cookie',
         '@mswjs/data',
         ...(mode === 'development' ? [] : [
           'react-error-boundary', 
