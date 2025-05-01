@@ -20,11 +20,9 @@ export const useDeleteUser = ({ mutationConfig }: UseDeleteUserOptions = {}) => 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (...args) => {
-      queryClient.invalidateQueries({
-        queryKey: getUsersQueryOptions().queryKey,
-      });
-      onSuccess?.(...args);
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries(getUsersQueryOptions());
+      onSuccess?.(data, variables);
     },
     ...restConfig,
     mutationFn: deleteUser,

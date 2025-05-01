@@ -36,18 +36,18 @@ type UseUpdateDiscussionOptions = {
 
 export const useUpdateDiscussion = ({
   mutationConfig,
-}: UseUpdateDiscussionOptions) => {
+}: UseUpdateDiscussionOptions = {}) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (data, { discussionId }) => {
-      queryClient.invalidateQueries({ queryKey: getDiscussionsQueryOptions().queryKey });
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: getDiscussionsQueryOptions({ page: 1 }).queryKey });
       queryClient.invalidateQueries({
-        queryKey: getDiscussionQueryOptions(discussionId).queryKey,
+        queryKey: getDiscussionQueryOptions(variables.discussionId).queryKey,
       });
-      onSuccess?.(data, { data: { title: data.title, body: data.body }, discussionId });
+      onSuccess?.(data, variables);
     },
     ...restConfig,
     mutationFn: updateDiscussion,

@@ -31,12 +31,12 @@ export const useUpdateProfile = ({ mutationConfig }: UseUpdateProfileOptions = {
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (...args) => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
         queryKey: ['auth-user'],
       });
       refetch();
-      onSuccess?.(...args);
+      onSuccess?.(data, variables);
     },
     ...restConfig,
     mutationFn: updateProfile,

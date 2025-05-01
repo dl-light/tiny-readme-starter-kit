@@ -33,11 +33,9 @@ export const useCreateDiscussion = ({ mutationConfig }: UseCreateDiscussionOptio
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (...args) => {
-      queryClient.invalidateQueries({
-        queryKey: getDiscussionsQueryOptions().queryKey,
-      });
-      onSuccess?.(...args);
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries({ queryKey: getDiscussionsQueryOptions({ page: 1 }).queryKey });
+      onSuccess?.(data, variables);
     },
     ...restConfig,
     mutationFn: createDiscussion,

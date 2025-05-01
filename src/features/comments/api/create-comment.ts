@@ -37,11 +37,11 @@ export const useCreateComment = ({
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (...args) => {
+    onSuccess: (data, variables) => {
       queryClient.invalidateQueries({
         queryKey: getInfiniteCommentsQueryOptions(discussionId).queryKey,
       });
-      onSuccess?.(...args);
+      onSuccess?.(data, variables);
     },
     ...restConfig,
     mutationFn: createComment,

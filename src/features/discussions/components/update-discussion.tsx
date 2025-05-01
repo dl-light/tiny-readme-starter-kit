@@ -1,5 +1,6 @@
 
 import { Pen } from 'lucide-react';
+import { FieldError } from 'react-hook-form';
 
 import { Button } from '@/components/ui/button';
 import { Form, FormDrawer, Input, Textarea } from '@/components/ui/form';

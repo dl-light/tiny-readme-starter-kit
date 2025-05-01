@@ -20,17 +20,15 @@ type UseDeleteDiscussionOptions = {
 
 export const useDeleteDiscussion = ({
   mutationConfig,
-}: UseDeleteDiscussionOptions) => {
+}: UseDeleteDiscussionOptions = {}) => {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig || {};
 
   return useMutation({
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: getDiscussionsQueryOptions().queryKey,
-      });
-      onSuccess?.(_, variables);
+    onSuccess: (data, variables) => {
+      queryClient.invalidateQueries(getDiscussionsQueryOptions({ page: 1 }));
+      onSuccess?.(data, variables);
     },
     ...restConfig,
     mutationFn: deleteDiscussion,
