@@ -35,6 +35,8 @@ export default defineConfig(({ mode }) => ({
         'react-query-auth',
         'zustand',
         'dayjs',
+        'dompurify',
+        'marked',
         ...(mode === 'development' ? [] : [
           'react-error-boundary', 
           '@tanstack/react-query-devtools',

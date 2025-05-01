@@ -1,5 +1,6 @@
 
-import { App } from "../../react-vite/src/app";
+import React from 'react';
+import App from '../App';
 
 const Index = () => {
   return <App />;

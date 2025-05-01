@@ -33,7 +33,7 @@ export default defineConfig({
   optimizeDeps: { exclude: ['fsevents'] },
   build: {
     rollupOptions: {
-      external: ['fs/promises', 'react-query-auth', 'axios', 'zustand', 'dayjs'],
+      external: ['fs/promises', 'react-query-auth', 'axios', 'zustand', 'dayjs', 'dompurify', 'marked'],
       output: {
         experimentalMinChunkSize: 3500,
       },
